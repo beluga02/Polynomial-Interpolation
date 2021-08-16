@@ -1,0 +1,48 @@
+import numpy as np
+
+"""
+Os polinômios Px(t), Py(t) e Pz(t) são formados a partir de coeficientes:
+
+Px(t) = a8t^8 + a7t^7 + a6t^6 + a5t^5 + a4t^4 + a3t^3 + a2t^2 + a1t^1 + a8
+Py(t) = b8t^8 + b7t^7 + b6t^6 + b5t^5 + b4t^4 + b3t^3 + b2t^2 + b1t^1 + b8
+Pz(t) = g8t^8 + g7t^7 + g6t^6 + g5t^5 + g4t^4 + g3t^3 + g2t^2 + g1t^1 + g8
+
+Portanto, para descobrir os valores dos coeficientes dos polinômios, precisamos 
+resolver o sistema de nove equações, pois temos os valores das funções nos
+pontos na tabela oferecida do próprio exercício.
+"""
+
+def resolver_px_py_pz(tempo):
+    ax = np.zeros(shape=(9, 9))
+    ay = np.zeros(shape=(9, 9))
+    az = np.zeros(shape=(9, 9))
+    # Elevar a variável t de 0 até 8 para cada polinômio
+    for k in range(9):
+        for i in range(9):
+            ax[k, i] = tempo[k] ** i
+            ay[k, i] = tempo[k] ** i
+            az[k, i] = tempo[k] ** i
+    # Os valores das posições do corpo
+    bx = ([0.7416, 0.2685, 0.3333, 0.3982, -0.0749, -0.3089, 0.3333, 0.9756, 0.7416])
+    by = ([0.7416, 0.9756, 0.3333, -0.3089, -0.0749, 0.3982, 0.3333, 0.2685, 0.7416])
+    bz = ([-0.4832, -0.2441, 0.3334, 0.9107, 1.1498, 0.9107, 0.3334, -0.2441, -0.4832])
+    x = np.linalg.solve(ax, bx)
+    y = np.linalg.solve(ay, by)
+    z = np.linalg.solve(az, bz)
+    # Resolvendo-se os sistemas lineares utilizando a biblioteca numpy, é 
+    # possível determinar os valores dos coeficientes dos polinômios.
+    print("A solução encontrada para os coeficientes de Px é: ")
+    for i in range(9):
+        print(np.format_float_positional(x[i], precision=15))
+    print("")
+    print("A solução encontrada para os coeficientes de Py é: ")
+    for i in range(9):
+        print(np.format_float_positional(y[i], precision=15))
+    print("")
+    print("A solução encontrada para os coeficientes de Pz é: ")
+    for i in range(9):
+        print(np.format_float_positional(z[i], precision=15))
+
+
+tempo = [0.000, 0.125, 0.250, 0.375, 0.500, 0.625, 0.750, 0.875, 1.000]
+resolver_px_py_pz(tempo)
