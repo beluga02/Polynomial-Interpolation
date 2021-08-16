@@ -1,0 +1,98 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from mpl_toolkits.mplot3d import Axes3D
+
+
+def main():
+    lista_px_real, lista_py_real, lista_pz_real = resolver()
+    verificar(lista_px_real, lista_py_real, lista_pz_real)
+    plotar_grafico(lista_px_real, lista_py_real, lista_pz_real)
+
+
+# Calculamos agora os valores dos polinômios para distintos valores de t, em que
+# t = j/50, para j = 0, 1, 2,..., 50.
+
+
+def resolver():
+    print("Exercício 2, parte 1:")
+    print("")
+    lista_t_exibir = ["t_j"]
+    lista_px_exibir = ["x_j"]
+    lista_py_exibir = ["y_j"]
+    lista_pz_exibir = ["z_j"]
+
+    lista_px_real = []
+    lista_py_real = []
+    lista_pz_real = []
+    for j in range(51):
+        t = j / 50
+        px = 0.7416*(t**0) + 1.737961904767872*(t**1) + (-133.05692063503648)*(t**2) + 1072.642560000888*(t**3) + \
+                (-3526.294897781301)*(t**4) + 5573.836800007805*(t**5) + (-4226.434844454158)*(t**6) + \
+                1257.7918781015712*(t**7) + (-20.22253714453632)*(t**8)
+        py = 0.7416*(t**0) + (-1.709992380957146)*(t**1) + 116.34510603184845*(t**2) + (-1067.3877333341322)*(t**3) + \
+                3553.5045688920723*(t**4) + (-5496.395093340397)*(t ** 5) + 4011.877262231024*(t**6) + \
+             (-1096.0115809581268)*(t**7) + (-20.222537141331667)*(t**8)
+        pz = -0.4832*(t**0) + (-0.027969523810057)*(t**1) + 16.711814603185843*(t**2) + (-5.254826666753928)*(t**3) + \
+             (-27.209671110768042)*(t**4) + (-77.44170666741654)*(t**5) + 214.5575822231424*(t**6) + \
+             (-161.78029714344876)*(t**7) + 40.4450742858691*(t**8)
+        lista_t_exibir.append(t)
+        lista_px_exibir.append(px)
+        lista_py_exibir.append(py)
+        lista_pz_exibir.append(pz)
+
+        lista_px_real.append(px)
+        lista_py_real.append(py)
+        lista_pz_real.append(pz)
+
+    pd.set_option("display.max_rows", None, "display.max_columns", None)
+    pd.set_option("display.precision", 15)
+    d = [lista_t_exibir, lista_px_exibir, lista_py_exibir, lista_pz_exibir]
+    df = pd.DataFrame(d)
+    print(df)
+    print("")
+    return lista_px_real, lista_py_real, lista_pz_real
+
+
+# Calcular Px(tj) + Py(tj) + Pz(tj) e vefificar se os resultados obtidos estão
+# perto de 1
+
+
+def verificar(lista_px_real, lista_py_real, lista_pz_real):
+    print("Exercício 2, parte 2")
+    print("")
+    for j in range(51):
+        res = lista_px_real[j] + lista_py_real[j] + lista_pz_real[j]
+        print("Para j = ", j, "Px(tj) + Py(tj) + Pz(tj) = %.20f" % res)
+
+    print("")
+    
+# Plotamos o gráfico utilizando a biblioteca Matplotlib em perspectiva 3D.
+def plotar_grafico(lista_px_real, lista_py_real, lista_pz_real):
+  print("Exercício 2, parte 3")
+  print("")
+  x = lista_px_real
+  y = lista_py_real
+  z = lista_pz_real
+
+  fig = plt.figure()
+
+  ax = fig.add_subplot(111, projection='3d')
+
+  ax.plot(x,y,z)
+  ax.set_title("(Px(tj*), Py(tj*), Pz(tj*)), para j = 0, 1, 2, ..., 50")
+
+  ax.set_xlabel("Px(tj*)")
+
+  ax.set_ylabel("Py(tj*)")
+
+  ax.set_zlabel("Pz(tj*)")
+
+  fig.set_size_inches(6, 6)
+
+  plt.show()
+
+
+
+main()
